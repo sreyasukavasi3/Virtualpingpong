@@ -25,8 +25,20 @@ def ball(x,y):
 def player1(x,y):
     screen.blit(barimg,(x,y))
 bh=1
-ass=200
 moving=False
+check,frame=video.read()
+sd=1
+se=1
+sdd=1
+for i in range(0,480):
+    for j in range(640):
+        b,g,r=frame[i][j]
+        if(r>=140 and g>=0 and g<=90 and b<=100):
+            sdd+=i
+            se+=j
+            sd+=1
+sdd=sdd//sd
+ass=max(sdd-75,0)
 running = True
 def moveball(x,y,bh,k1,k2):
     if(bh==1):
@@ -50,6 +62,8 @@ k=45
 k1=40
 k2=50
 sf=50
+sd1=False
+
 while running:
     check,frame=video.read()
     sd=1
@@ -58,7 +72,7 @@ while running:
     for i in range (ass,min(ass+150,480)):
         for j in range(640):
             b,g,r=frame[i][j]
-            if(r>=190 and g>=60 and g<=180 and b<=50):
+            if(r>=140 and g>=0 and g<=90 and b<=100):
                 sdd+=i
                 se+=j
                 sd+=1
@@ -86,10 +100,10 @@ while running:
         
     if(sd!=1):
         if(sdd<prev):
-            ass=ass-25
+            ass=ass-50
             prev=ass
         elif(sdd>prev):
-            ass=ass+25
+            ass=ass+50
             prev=ass
         if (moving):
             player1_x=se
@@ -140,6 +154,19 @@ while running:
             k2=sf*math.cos(k)
             k2=abs(k2)
     else:
+        sd=1
+        se=1
+        sdd=1
+        for i in range(0,480):
+            for j in range(640):
+                b,g,r=frame[i][j]
+                if(r>=140 and g>=0 and g<=90 and b<=100):
+                    sdd+=i
+                    se+=j
+                    sd+=1
+        sdd=sdd//sd
+        ass=max(sdd-75,0)
+        print("assupdate",ass)
         font = pygame.font.Font('freesansbold.ttf', 32) 
         text = font.render('object into camera zone', True, green, blue)
         textRect = text.get_rect() 
